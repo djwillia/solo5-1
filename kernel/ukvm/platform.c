@@ -31,6 +31,7 @@ void process_bootinfo(void *arg)
     cmdline = bi->cmdline;
     mem_size = bi->mem_size;
     kernel_end = bi->mem_size;
+    ukvm_linux_hypercall_ptr = bi->hypercall_ptr;
 }
 
 const char *platform_cmdline(void)

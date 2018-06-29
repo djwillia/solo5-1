@@ -41,18 +41,18 @@ void mem_lock_heap(uintptr_t *start, size_t *size)
 
 void mem_init(void)
 {
-    extern char _stext[], _etext[], _erodata[], _end[];
+    //extern char _stext[], _etext[], _erodata[], _end[];
     uint64_t mem_size;
 
     mem_size = platform_mem_size();
-    heap_start = ((uint64_t)&_end + PAGE_SIZE - 1) & PAGE_MASK;
+    heap_start = (platform_kernel_end() + PAGE_SIZE - 1) & PAGE_MASK;
     
     /*
      * Cowardly refuse to run with less than 512KB of free memory.
      */
-    if (heap_start + 0x80000 > mem_size)
-	PANIC("Not enough memory");
-
+    if (0x80000 > mem_size)
+        PANIC("Not enough memory");
+#if 0
     log(INFO, "Solo5: Memory map: %lu MB addressable:\n", mem_size >> 20);
     log(INFO, "Solo5:     unused @ (0x0 - 0x%lx)\n", &_stext[-1]);
     log(INFO, "Solo5:       text @ (0x%lx - 0x%lx)\n", &_stext, &_etext[-1]);
@@ -60,6 +60,7 @@ void mem_init(void)
     log(INFO, "Solo5:       data @ (0x%lx - 0x%lx)\n", &_erodata, &_end[-1]);
     log(INFO, "Solo5:       heap >= 0x%lx < stack < 0x%lx\n", heap_start,
         mem_size);
+#endif
 }
 
 /* 

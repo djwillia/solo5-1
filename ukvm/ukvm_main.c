@@ -128,7 +128,7 @@ static void usage(const char *prog)
 int main(int argc, char **argv)
 {
     size_t mem_size = 0x40000000;
-    ukvm_gpa_t gpa_ep, gpa_kend;
+    ukvm_gpa_t gpa_ep, gpa_kend = 0;
     const char *prog;
     const char *elffile;
     int matched;
@@ -188,8 +188,9 @@ int main(int argc, char **argv)
     ukvm_hv_mem_size(&mem_size);
     struct ukvm_hv *hv = ukvm_hv_init(mem_size);
 
-    ukvm_elf_load(elffile, hv->mem, hv->mem_size, &gpa_ep, &gpa_kend);
-
+    //ukvm_elf_load(elffile, hv->mem, hv->mem_size, &gpa_ep, &gpa_kend);
+    ukvm_dynamic_load(elffile, &gpa_ep);
+    
     char *cmdline;
     ukvm_hv_vcpu_init(hv, gpa_ep, gpa_kend, &cmdline);
     setup_cmdline(cmdline, argc, argv);

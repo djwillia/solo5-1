@@ -43,9 +43,13 @@ Makefile.ukvm: $(UKVM_SRC)/ukvm-configure
 
 -include Makefile.ukvm
 
-%.ukvm: %.o $(SOLO5_DIR)/ukvm/solo5.lds $(SOLO5_DIR)/ukvm/solo5.o
-	$(LD) -T $(SOLO5_DIR)/ukvm/solo5.lds \
-			 $(LDFLAGS) -o $@ $(SOLO5_DIR)/ukvm/solo5.o $< $(LDLIBS)
+# %.ukvm: %.o $(SOLO5_DIR)/ukvm/solo5.lds $(SOLO5_DIR)/ukvm/solo5.o
+# 	$(LD) -T $(SOLO5_DIR)/ukvm/solo5.lds \
+# 			 $(LDFLAGS) -o $@ $(SOLO5_DIR)/ukvm/solo5.o $< $(LDLIBS)
+
+%.ukvm: %.o $(SOLO5_DIR)/ukvm/solo5.o
+	$(LD) -shared -nostdlib -o $@ -o $@ $(SOLO5_DIR)/ukvm/solo5.o $< $(LDLIBS)
+
 
 $(SOLO5_DIR)/ukvm/solo5.o: 
 	$(MAKE) -C $(SOLO5_DIR) ukvm

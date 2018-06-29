@@ -86,7 +86,7 @@ case $(uname -s) in
         # cc_has_pie && HOST_CFLAGS="${HOST_CFLAGS} -fno-pie"
         # Same for the stack protector, no robust way to detect if this is on by
         # default so always disable it.
-        HOST_CFLAGS="${HOST_CFLAGS} -fno-stack-protector"
+        HOST_CFLAGS="${HOST_CFLAGS} -fno-stack-protector -fPIC"
         BUILD_UKVM="yes"
         if [ "${TARGET_ARCH}" = "x86_64" ]; then
             BUILD_VIRTIO="yes"

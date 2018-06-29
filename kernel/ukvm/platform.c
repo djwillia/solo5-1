@@ -22,6 +22,7 @@
 
 static const char *cmdline;
 static uint64_t mem_size;
+static uint64_t kernel_end;
 
 void process_bootinfo(void *arg)
 {
@@ -29,6 +30,7 @@ void process_bootinfo(void *arg)
 
     cmdline = bi->cmdline;
     mem_size = bi->mem_size;
+    kernel_end = bi->mem_size;
 }
 
 const char *platform_cmdline(void)
@@ -39,4 +41,9 @@ const char *platform_cmdline(void)
 uint64_t platform_mem_size(void)
 {
     return mem_size;
+}
+
+uint64_t platform_kernel_end(void)
+{
+    return kernel_end;
 }

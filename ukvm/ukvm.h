@@ -54,6 +54,13 @@ void ukvm_elf_load(const char *file, uint8_t *mem, size_t mem_size,
         ukvm_gpa_t *p_entry, ukvm_gpa_t *p_end);                
 
 /*
+ * Load an ELF dynamic library (.so), returning the entry point (the _start
+ * symbol) using the gpa_ep output argument.
+ */
+void ukvm_dynamic_load(const char *file, ukvm_gpa_t *p_entry);
+
+
+/*
  * Check that (gpa) and (gpa + sz) are within guest memory. Returns a host-side
  * pointer to (gpa) if successful, aborts if not.
  */

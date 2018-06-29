@@ -85,9 +85,9 @@ add_module ()
     add_cflags "${enableit}"
 }
 
-UKVM_CFLAGS=
-UKVM_LDFLAGS="-T ${UKVM_SRC}/ukvm.lds -z execstack"
-UKVM_LDLIBS=
+UKVM_CFLAGS=-rdynamic
+UKVM_LDFLAGS=-static
+UKVM_LDLIBS=-ldl
 UKVM_HEADERS=
 UKVM_OBJS=
 add_obj ukvm_core.o ukvm_elf.o ukvm_main.o

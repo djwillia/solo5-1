@@ -40,6 +40,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <dlfcn.h>
 
 #include "ukvm.h"
 
@@ -252,4 +253,24 @@ void ukvm_elf_load(const char *file, uint8_t *mem, size_t mem_size,
     close (fd_kernel);
     *p_entry = hdr.e_entry;
     return;
+}
+
+
+void ukvm_dynamic_load(const char *file, ukvm_gpa_t *p_entry)
+{
+    void *lib_handle;
+    char *error;
+    
+    /*
+     * file is not used the same way as in a regular open(). In dlopen(), file
+     * is only interpreted as a relative or absolute if it starts with /, ../,
+     * or ./. Otherwise, the name is looked for at /usr/lib, /lib, etc.
+     */
+    lib_handle = dlopen(file, RTLD_LAZY);
+    if (!lib_handle)
+        errx(1, "%s", dlerror());
+    
+    *p_entry = (uint64_t)dlsym(lib_handle, "_start");
+    if ((error = dlerror()) != NULL)
+        errx(1, "%s", error);
 }
